@@ -31,6 +31,7 @@ namespace Talabat.APIs
 			using var scope = app.Services.CreateScope();
 
 		    var services = scope.ServiceProvider;
+
 		    var _dbContext = services.GetRequiredService<StoreContext>();
 
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
@@ -38,6 +39,7 @@ namespace Talabat.APIs
 			try
 			{
 				await _dbContext.Database.MigrateAsync();
+				await StoreContextSeed.SeedAsync(_dbContext);
 			}
 			catch (Exception ex)
 			{
