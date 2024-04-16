@@ -53,7 +53,7 @@ namespace Talabat.APIs
 			catch (Exception ex)
 			{
 				var logger = loggerFactory.CreateLogger<Program>();
-				logger.LogError(ex, "An Error Has Been Occured During Applying The Migration");
+				logger.LogError(ex.StackTrace.ToString());
 			}
 		
 
