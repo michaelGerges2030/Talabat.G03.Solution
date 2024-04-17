@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Text.Json;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
@@ -69,6 +71,7 @@ namespace Talabat.APIs
 		    var _dbContext = services.GetRequiredService<StoreContext>();
 
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+			var _logger = loggerFactory.CreateLogger<Program>();
 
 			try
 			{
@@ -77,14 +80,48 @@ namespace Talabat.APIs
 			}
 			catch (Exception ex)
 			{
-				var logger = loggerFactory.CreateLogger<Program>();
-				logger.LogError(ex.StackTrace.ToString());
+			
+				_logger.LogError(ex.StackTrace.ToString());
 			}
 
 
 			#region Configure Kestrel Middlewares
 
 			app.UseMiddleware<ExceptionMiddleware>();
+
+			#region MiddleWare another way
+	//		app.Use(async (httpContext, _next) =>
+	//{
+	//	try
+	//	{
+	//		//writing code that takes action with the Request
+
+	//		await _next.Invoke(httpContext); //Go to the next Middleware
+
+	//		//writing code that takes action with the Response
+	//	}
+	//	catch (Exception ex)
+	//	{
+	//		_logger.LogError(ex.Message);
+
+	//		httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+	//		httpContext.Response.ContentType = "application/json";
+
+	//		var response = app.Environment.IsDevelopment() ?
+	//			new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString())
+	//			:
+	//			new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
+
+	//		var options = new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+	//		var json = JsonSerializer.Serialize(response, options);
+
+	//		await httpContext.Response.WriteAsync(json);
+
+	//	}
+	//}); 
+			#endregion
+
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())

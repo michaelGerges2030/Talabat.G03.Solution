@@ -35,7 +35,7 @@ namespace Talabat.APIs.Middlewares
 				httpContext.Response.ContentType = "application/json";
 
 				var response = _env.IsDevelopment() ?
-					new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString())
+					new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString())
 					:
 					new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
 
