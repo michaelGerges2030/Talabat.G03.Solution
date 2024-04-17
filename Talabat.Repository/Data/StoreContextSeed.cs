@@ -12,12 +12,12 @@ namespace Talabat.Repository.Data
 	{
 		public async static Task SeedAsync(StoreContext _dbContext)
 		{
-			if (_dbContext.ProductBrands.Count() == 0)
+			if (!_dbContext.ProductBrands.Any())
 			{
 				var brandsData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/brands.json");
 				var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 
-				if (brands?.Count() > 0)
+				if (brands?.Count > 0)
 				{
 
 					foreach (var brand in brands)
@@ -27,12 +27,12 @@ namespace Talabat.Repository.Data
 					await _dbContext.SaveChangesAsync();
 				} 
 			}
-			if (_dbContext.ProductCategories.Count() == 0)
+			if (!_dbContext.ProductCategories.Any())
 			{
 				var categoriesData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/categories.json");
 				var categories = JsonSerializer.Deserialize<List<ProductCategory>>(categoriesData);
 
-				if (categories?.Count() > 0)
+				if (categories?.Count > 0)
 				{
 					foreach (var category in categories)
 					{
@@ -41,12 +41,12 @@ namespace Talabat.Repository.Data
 					await _dbContext.SaveChangesAsync();
 				}
 			}
-			if (_dbContext.Products.Count() == 0)
+			if (!_dbContext.Products.Any())
 			{
 				var productsData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/products.json");
 				var products = JsonSerializer.Deserialize<List<Product>>(productsData);
 
-				if (products?.Count() > 0)
+				if (products?.Count > 0)
 				{
 					foreach (var product in products)
 					{
