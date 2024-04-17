@@ -16,7 +16,6 @@ namespace Talabat.APIs
 	{
 		public static async Task Main(string[] args)
 		{
-
 			var builder = WebApplication.CreateBuilder(args);
 
 			#region Configure Services
@@ -79,8 +78,7 @@ namespace Talabat.APIs
 				await StoreContextSeed.SeedAsync(_dbContext);
 			}
 			catch (Exception ex)
-			{
-			
+			{	
 				_logger.LogError(ex.StackTrace.ToString());
 			}
 
@@ -129,6 +127,8 @@ namespace Talabat.APIs
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+
+			app.UseStatusCodePagesWithReExecute("/Errors");
 
 			app.UseHttpsRedirection();
 
