@@ -10,9 +10,11 @@
 
         public string Category { get; set; }
 
-        public string Quantity { get; set; }
+		public string Brand { get; set; }
 
-        public int MyProperty { get; set; }
+		public int Quantity { get; set; }
+
+       
 
     }
 }
