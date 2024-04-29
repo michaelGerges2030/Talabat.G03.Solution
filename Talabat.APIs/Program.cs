@@ -7,6 +7,7 @@ using Talabat.APIs.Errors;
 using Talabat.APIs.Extensions;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
+using Talabat.Application.AuthService;
 using Talabat.Core.Entities;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
@@ -43,6 +44,8 @@ namespace Talabat.APIs
 
 			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+			builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
 			//builder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
 			//builder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
