@@ -19,6 +19,7 @@ using Talabat.Infrastructure._Identity.Config;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 
+
 namespace Talabat.APIs
 {
 	public class Program
@@ -141,7 +142,13 @@ namespace Talabat.APIs
 			app.UseStaticFiles();
 
 			//app.UseAuthorization();
-			app.MapControllers();
+			app.UseRouting();
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
 
 			#endregion
 
