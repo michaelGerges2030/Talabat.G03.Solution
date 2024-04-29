@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -7,7 +8,9 @@ using Talabat.APIs.Extensions;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Infrastructure._Identity;
 using Talabat.Infrastructure._Identity.Config;
 using Talabat.Repository;
 using Talabat.Repository.Data;
@@ -38,6 +41,9 @@ namespace Talabat.APIs
 				options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
 			});
 
+			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
 			//builder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
 			//builder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
 			//builder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
@@ -66,6 +72,9 @@ namespace Talabat.APIs
 				await _dbContext.Database.MigrateAsync();
 				await _identityDbContext.Database.MigrateAsync();
 				await StoreContextSeed.SeedAsync(_dbContext);
+
+				var _userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+				await ApplicationIdentityContextSeed.SeedUsersAsync(_userManager);
 			}
 			catch (Exception ex)
 			{	
