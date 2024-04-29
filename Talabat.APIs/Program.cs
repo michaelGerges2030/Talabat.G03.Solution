@@ -8,6 +8,7 @@ using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Infrastructure._Identity.Config;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 
@@ -32,12 +33,19 @@ namespace Talabat.APIs
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
+			builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
+			{
+				options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+			});
+
 			//builder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
 			//builder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
 			//builder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
 
-		
+
 			builder.Services.AddAplicationServices();
+
+			
 
 			#endregion
 
@@ -48,6 +56,7 @@ namespace Talabat.APIs
 		    var services = scope.ServiceProvider;
 
 		    var _dbContext = services.GetRequiredService<StoreContext>();
+			var _identityDbContext = services.GetRequiredService<ApplicationIdentityDbContext>();
 
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 			var _logger = loggerFactory.CreateLogger<Program>();
@@ -55,6 +64,7 @@ namespace Talabat.APIs
 			try
 			{
 				await _dbContext.Database.MigrateAsync();
+				await _identityDbContext.Database.MigrateAsync();
 				await StoreContextSeed.SeedAsync(_dbContext);
 			}
 			catch (Exception ex)
