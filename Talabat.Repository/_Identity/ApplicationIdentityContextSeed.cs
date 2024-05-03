@@ -16,10 +16,10 @@ namespace Talabat.Infrastructure._Identity
 			{
 				var user = new ApplicationUser()
 				{
-					DisplayName = "Michael Sameh",
-					Email = "michaelsameh2030@gmail.com",
-					UserName = "michael.sameh",
-					PhoneNumber = "+201276091313"
+					DisplayName = "Ahmed Nasr",
+					Email = "ahmed.nasr@linkdev.com",
+					UserName = "ahmed.nasr",
+					PhoneNumber = "01122334455"
 				};
 
 				await userManager.CreateAsync(user, "P@ssw0rd");
