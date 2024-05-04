@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -47,6 +49,12 @@ namespace Talabat.APIs
 			builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
 			{
 				options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+			});
+
+			builder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+			{
+				var connection = builder.Configuration.GetConnectionString("Redis");
+				return ConnectionMultiplexer.Connect(connection);
 			});
 
 			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
