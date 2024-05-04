@@ -13,14 +13,14 @@ using Talabat.Core.Specifications.Product_Specs;
 
 namespace Talabat.APIs.Controllers
 {
-	public class ProductController : BaseAPIController
+	public class ProductsController : BaseAPIController
 	{
 		private readonly IGenericRepository<Product> _productsRepo;
 		private readonly IGenericRepository<ProductBrand> _brandsRepo;
 		private readonly IGenericRepository<ProductCategory> _categoriesRepo;
 		private readonly IMapper _mapper;
 
-		public ProductController(
+		public ProductsController(
 			IGenericRepository<Product> productsRepo,
 			IGenericRepository<ProductBrand> brandsRepo,
 			IGenericRepository<ProductCategory> categoriesRepo,
