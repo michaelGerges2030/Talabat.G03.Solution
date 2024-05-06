@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Talabat.Core.Entities.Order_Aggregate
 {
-	public class DeliveryMethod
+	public class DeliveryMethod: BaseEntity
 	{
         public string ShortName { get; set; } = null!;
 

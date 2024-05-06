@@ -90,8 +90,9 @@ namespace Talabat.APIs
 			try
 			{
 				await _dbContext.Database.MigrateAsync();
-				await _identityDbContext.Database.MigrateAsync();
 				await StoreContextSeed.SeedAsync(_dbContext);
+				await _identityDbContext.Database.MigrateAsync();
+				
 
 				var _userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 				await ApplicationIdentityContextSeed.SeedUsersAsync(_userManager);

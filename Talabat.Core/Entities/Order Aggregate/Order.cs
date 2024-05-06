@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Talabat.Core.Entities.Order_Aggregate
 {
-	public class Order
+	public class Order: BaseEntity
 	{
 		public string BuyerEmail { get; set; } = null!;
 
@@ -15,8 +15,8 @@ namespace Talabat.Core.Entities.Order_Aggregate
 		public OrderStatus Status { get; set; } = OrderStatus.Pending;
 		public Address ShippingAddress { get; set; } = null!;
 
-        public int DeliveryMethodId { get; set; }
-        public DeliveryMethod DeliveryMethod { get; set; } = null!;
+        public int? DeliveryMethodId { get; set; }
+        public DeliveryMethod? DeliveryMethod { get; set; } = null!;
 
 		public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
 
@@ -24,7 +24,7 @@ namespace Talabat.Core.Entities.Order_Aggregate
 
         //[NotMapped]
         //public decimal Total => Subtotal + DeliveryMethod.Cost;
-        public decimal GetTotal() => Subtotal + DeliveryMethod.Cost;
+        public decimal GetTotal() => Subtotal + DeliveryMethod?.Cost ?? 0;
 
         public string PaymentIntentId { get; set; } = string.Empty; 
 
