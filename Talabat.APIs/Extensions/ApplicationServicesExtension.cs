@@ -4,8 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
+using Talabat.Application.OrderService;
 using Talabat.Core;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Core.Services.Contract;
 using Talabat.Infrastructure;
 using Talabat.Repository;
 
@@ -15,6 +17,7 @@ namespace Talabat.APIs.Extensions
 	{
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
+			services.AddScoped(typeof(IOrderService), typeof(OrderService));
 
 			services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 

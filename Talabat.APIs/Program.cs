@@ -61,6 +61,7 @@ namespace Talabat.APIs
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
 			builder.Services.AddAuthServices(builder.Configuration);
+			
 
 			builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
