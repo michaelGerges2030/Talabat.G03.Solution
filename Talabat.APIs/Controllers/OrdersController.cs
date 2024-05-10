@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Dtos;
@@ -8,8 +9,8 @@ using Talabat.Core.Services.Contract;
 
 namespace Talabat.APIs.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
+
+	[Authorize]
 	public class OrdersController : BaseAPIController
 	{
 		private readonly IOrderService _orderService;
@@ -36,7 +37,7 @@ namespace Talabat.APIs.Controllers
 			return Ok(_mapper.Map<Order, OrderToReturnDto>(order));
 		}
 
-
+		
 		[HttpGet]
 		public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser(string email)
 		{
@@ -44,6 +45,7 @@ namespace Talabat.APIs.Controllers
 
 			return Ok(_mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDto>>(orders));
 		}
+
 
 		[ProducesResponseType(typeof(OrderToReturnDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -56,5 +58,14 @@ namespace Talabat.APIs.Controllers
 
 			return Ok(_mapper.Map<OrderToReturnDto>(order));
 		}
+
+
+		[HttpGet("deliveryMethod")]
+		public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+		{
+			var deliveryMethods = await _orderService.GetDeliveryMethodsAsync();
+			return Ok(deliveryMethods);
+		}
+
 	}
 }
