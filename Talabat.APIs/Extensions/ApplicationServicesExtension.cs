@@ -5,6 +5,7 @@ using System.Text;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
 using Talabat.Application.OrderService;
+using Talabat.Application.ProductService;
 using Talabat.Core;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
@@ -17,6 +18,8 @@ namespace Talabat.APIs.Extensions
 	{
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
+			services.AddScoped(typeof(IProductService), typeof(ProductService));
+
 			services.AddScoped(typeof(IOrderService), typeof(OrderService));
 
 			services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
