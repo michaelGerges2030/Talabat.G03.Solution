@@ -62,8 +62,6 @@ namespace Talabat.APIs.Extensions
 	
 		public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration) 
 		{
-
-
 			services.AddIdentity<ApplicationUser, IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
