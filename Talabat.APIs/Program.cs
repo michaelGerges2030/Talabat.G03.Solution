@@ -56,11 +56,6 @@ namespace Talabat.APIs
 				var connection = builder.Configuration.GetConnectionString("Redis");
 				return ConnectionMultiplexer.Connect(connection);
 			});
-
-			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
-
-			builder.Services.AddAuthServices(builder.Configuration);
 			
 
 			builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
