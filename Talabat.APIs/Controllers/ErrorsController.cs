@@ -9,7 +9,8 @@ namespace Talabat.APIs.Controllers
 	[ApiExplorerSettings(IgnoreApi = true)]	
 	public class ErrorsController : ControllerBase
 	{
-       public ActionResult Error(int code)
+		//[HttpGet]
+		public ActionResult Error(int code)
 		{
 			if (code == 401)
 				return Unauthorized(new ApiResponse(401));
