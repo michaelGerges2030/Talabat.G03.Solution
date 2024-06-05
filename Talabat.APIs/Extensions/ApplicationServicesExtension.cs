@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Talabat.APIs.CacheService;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
 using Talabat.Application.OrderService;
@@ -22,6 +23,8 @@ namespace Talabat.APIs.Extensions
 	{
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
+
+			services.AddSingleton(typeof(IResponseCacheService), typeof(ResponseCacheService));
 
 			services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
 

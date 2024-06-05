@@ -24,7 +24,7 @@ namespace Talabat.APIs.CacheService
 
 		}
 
-		public async Task<string?> GetCacheResponseAsync(string Key)
+		public async Task<string?> GetCachedResponseAsync(string Key)
 		{
 		    var response = await _database.StringGetAsync(Key);
 
