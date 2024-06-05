@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Talabat.APIs.Errors;
@@ -22,6 +23,7 @@ namespace Talabat.APIs.Controllers
 		     _logger = logger;
 		}
 
+		[Authorize]
 		[ProducesResponseType(typeof(CustomerBasket), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 		[HttpGet]
