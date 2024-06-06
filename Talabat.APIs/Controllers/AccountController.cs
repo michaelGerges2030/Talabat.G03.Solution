@@ -116,8 +116,5 @@ namespace Talabat.APIs.Controllers
 			return Ok(address);	
 
 		}
-
 	}
-
-
 }

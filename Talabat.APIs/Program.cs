@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using System.Net;
 using System.Text;
@@ -36,7 +37,7 @@ namespace Talabat.APIs
 
 			builder.Services.AddControllers().AddNewtonsoftJson(options =>
 			{
-				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+				options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 			});
 
 			builder.Services.AddSwaggerServices();
@@ -56,11 +57,7 @@ namespace Talabat.APIs
 				var connection = builder.Configuration.GetConnectionString("Redis");
 				return ConnectionMultiplexer.Connect(connection);
 			});
-
-			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
-
-			builder.Services.AddAuthServices(builder.Configuration);
+			
 
 			builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
@@ -71,7 +68,14 @@ namespace Talabat.APIs
 
 			builder.Services.AddAplicationServices();
 
-			
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("MyPolicy", policyOptions =>
+				{
+					policyOptions.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration["FrontBaseUrl"]);
+				});
+			});
+
 
 			#endregion
 
@@ -90,8 +94,9 @@ namespace Talabat.APIs
 			try
 			{
 				await _dbContext.Database.MigrateAsync();
-				await _identityDbContext.Database.MigrateAsync();
 				await StoreContextSeed.SeedAsync(_dbContext);
+				await _identityDbContext.Database.MigrateAsync();
+				
 
 				var _userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 				await ApplicationIdentityContextSeed.SeedUsersAsync(_userManager);
@@ -152,8 +157,12 @@ namespace Talabat.APIs
 
 			app.UseStaticFiles();
 
-			//app.UseAuthorization();
+
+			app.UseCors("MyPolicy");
+
+	
 			app.UseRouting();
+
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>

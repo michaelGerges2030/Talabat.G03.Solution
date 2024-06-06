@@ -1,11 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Talabat.APIs.CacheService;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
+using Talabat.Application.OrderService;
+using Talabat.Application.PaymentService;
+using Talabat.Application.ProductService;
+using Talabat.Core;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Core.Services.Contract;
 using Talabat.Infrastructure;
+using Talabat.Infrastructure._Identity.Config;
 using Talabat.Repository;
 
 namespace Talabat.APIs.Extensions
@@ -15,10 +24,20 @@ namespace Talabat.APIs.Extensions
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
 
+			services.AddSingleton(typeof(IResponseCacheService), typeof(ResponseCacheService));
+
+			services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
+
+			services.AddScoped(typeof(IProductService), typeof(ProductService));
+
+			services.AddScoped(typeof(IOrderService), typeof(OrderService));
+
+			services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
 			//services.AddScoped<IBasketRepository, BasketRepository>();
 			services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
 
-			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			//services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 			//builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
 			services.AddAutoMapper(typeof(MappingProfiles));
@@ -46,6 +65,11 @@ namespace Talabat.APIs.Extensions
 	
 		public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration) 
 		{
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+			services.AddAuthServices(configuration);
+
 			services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
